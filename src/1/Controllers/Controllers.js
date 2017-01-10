@@ -2,6 +2,8 @@ const Router = require('express').Router;
 const ExampleController = require('./ExampleController');
 const ExampleModel = require('../Models/ExampleModel');
 const ExampleModelMock = require('../../Mocks/1/Models/ExampleModel');
+const HTTPClient = require('../../Adapters/HTTPClient');
+const HTTPClientMock = require('../../Mocks/HTTPClient');
 
 /*
 An example of our top level controller. This controller is responsible for initializing and aggregating
@@ -13,13 +15,12 @@ class Controllers{
         this.BaseRouter = new Router;
 
         //A Mock Controller (we can use our real Controller and classes, simply by passing mock Models)
-        this.MockExampleController = new ExampleController(new ExampleModelMock);
-        
-        //An Example Model
-        this.ExampleModel = new ExampleModel;
+        let MockProxyClient = new HTTPClientMock;
+        MockProxyClient.setGETMock(200,{},'EXAMPLE MOCK');
+        this.MockExampleController = new ExampleController(new ExampleModelMock,MockProxyClient);
 
         //And our controller
-        this.ExampleController = new ExampleController(this.ExampleModel);
+        this.ExampleController = new ExampleController(new ExampleModel,new HTTPClient);
     }
 
     getRouter(){

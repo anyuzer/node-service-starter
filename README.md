@@ -33,3 +33,14 @@ Can be played with directly from a git clone
 
 ## Testing
 `npm test`
+
+## Test Endpoints
+_(by default TLS is 9799 when enabled)_
+* `localhost:8799/v1/example`
+* `localhost:8799/v1/example/stats`
+* `localhost:8799/v1/example/proxy`
+
+
+* `localhost:8799/v1/mock/example`
+* `localhost:8799/v1/mock/example/stats`
+* `localhost:8799/v1/mock/example/proxy`

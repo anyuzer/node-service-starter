@@ -8,10 +8,10 @@ A higher level resource controller. We explicitly own responsibility spaces in t
 Required shared models are injected in from the initializing class, which maintains testability and flexibility.
  */
 class ExampleController{
-    constructor(_ExampleModel){
+    constructor(_ExampleModel,_ProxyClient){
         this.ExampleModel = _ExampleModel;
         this.MethodEndpoint = new MethodEndpoint(_ExampleModel);
-        this.ProxyEndpoint = new ProxyEndpoint(new HTTPClient);
+        this.ProxyEndpoint = new ProxyEndpoint(_ProxyClient);
     }
     
     getRouter(){

@@ -26,7 +26,8 @@
         "statements": 100
       }
     },
-    "mocksPattern":"(?:[\\/]|^)Mocks[\\/]",
-    "coveragePathIgnorePatterns":["/Adapters/"]
+    "mocksPattern":"(?:[\\/]|^)__mocks__[\\/]",
+    "coveragePathIgnorePatterns":["/Adapters/"],
+    "testPathIgnorePatterns":["/__mocks__/"]
   }
 }

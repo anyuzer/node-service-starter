@@ -1,5 +1,5 @@
 const RemotePoll = require('../../src/Utilities/RemotePoll');
-const HTTPClient = require('../../src/Mocks/HTTPClient');
+const HTTPClient = require('../../__mocks__/HTTPClient');
 const Hash = require('../../src/Adapters/Hash');
 
 describe('Example RemotePoll',function(){

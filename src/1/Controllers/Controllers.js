@@ -1,9 +1,10 @@
 const Router = require('express').Router;
 const ExampleController = require('./ExampleController');
 const ExampleModel = require('../Models/ExampleModel');
-const ExampleModelMock = require('../../Mocks/1/Models/ExampleModel');
 const HTTPClient = require('../../Adapters/HTTPClient');
-const HTTPClientMock = require('../../Mocks/HTTPClient');
+
+const HTTPClientMock = require('../../../__mocks__/HTTPClient');
+const ExampleModelMock = require('../../../__mocks__/1/Models/ExampleModel');
 
 /*
 An example of our top level controller. This controller is responsible for initializing and aggregating

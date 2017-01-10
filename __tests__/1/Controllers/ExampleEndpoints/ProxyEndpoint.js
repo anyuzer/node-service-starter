@@ -1,7 +1,7 @@
 const ProxyEndpoint = require('../../../../src/1/Controllers/ExampleEndpoints/ProxyEndpoint');
-const ResponseMock = require('../../../../src/Mocks/ResponseMock');
-const RequestMock = require('../../../../src/Mocks/RequestMock');
-const HTTPClient = require('../../../../src/Mocks/HTTPClient');
+const ResponseMock = require('../../../../__mocks__/ResponseMock');
+const RequestMock = require('../../../../__mocks__/RequestMock');
+const HTTPClient = require('../../../../__mocks__/HTTPClient');
 
 describe('V1 Example Proxy Endpoint',()=>{
     var response,request,TestEndpoint,TestClient;

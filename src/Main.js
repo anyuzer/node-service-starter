@@ -32,12 +32,12 @@ class Main{
 
         //A TLS server
         //NOTE: This is only an example. In production scalable environments HTTPS is better handled at the load balancer
-        this.SecureServer = new HTTPServer;
-        this.SecureServer.setHost(Config.getSecureHost());
-        this.SecureServer.setPort(Config.getSecurePort());
-        this.SecureServer.setTLSOptions(Config.getTLSOptions());
-        this.SecureServer.setAttemptLimit(5);
-        this.SecureServer.start();
+        // this.SecureServer = new HTTPServer;
+        // this.SecureServer.setHost(Config.getSecureHost());
+        // this.SecureServer.setPort(Config.getSecurePort());
+        // this.SecureServer.setTLSOptions(Config.getTLSOptions());
+        // this.SecureServer.setAttemptLimit(5);
+        // this.SecureServer.start();
     }
 
     startAPI(_version){
@@ -50,7 +50,7 @@ class Main{
         var Controller = new V1Controller;
         console.log('Binding V1 API...');
         this.Server.catchRequest().use('/v1',Controller.getRouter());
-        this.SecureServer.catchRequest().use('/v1',Controller.getRouter());
+        //this.SecureServer.catchRequest().use('/v1',Controller.getRouter());
         _resolve();
     }
 
@@ -75,8 +75,8 @@ class Main{
         this.Server.catchRequest().use(BodyParser.json());
         this.Server.catchRequest().use(BodyParser.urlencoded({extended:true}));
 
-        this.SecureServer.catchRequest().use(BodyParser.json());
-        this.SecureServer.catchRequest().use(BodyParser.urlencoded({extended:true}));
+        //this.SecureServer.catchRequest().use(BodyParser.json());
+        //this.SecureServer.catchRequest().use(BodyParser.urlencoded({extended:true}));
         return Promise.resolve(true);
     }
 
@@ -88,8 +88,8 @@ class Main{
         //Some low generics
         this.Server.attachMiddleware(this._generic404Handler);
         this.Server.attachMiddleware(this._generic500Handler);
-        this.SecureServer.attachMiddleware(this._generic404Handler);
-        this.SecureServer.attachMiddleware(this._generic500Handler);
+        //this.SecureServer.attachMiddleware(this._generic404Handler);
+        //this.SecureServer.attachMiddleware(this._generic500Handler);
         return Promise.resolve(true);
     }
 

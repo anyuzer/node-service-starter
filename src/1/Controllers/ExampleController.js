@@ -23,6 +23,7 @@ class ExampleController{
         Router.delete('/',this.MethodEndpoint.catchDelete.bind(this.MethodEndpoint));
         Router.patch('/',this.MethodEndpoint.catchPatch.bind(this.MethodEndpoint));
         Router.put('/',this.MethodEndpoint.catchPatch.bind(this.MethodEndpoint));
+        
         Router.get('/stats',this.MethodEndpoint.returnStats.bind(this.MethodEndpoint));
         return Router;
     }

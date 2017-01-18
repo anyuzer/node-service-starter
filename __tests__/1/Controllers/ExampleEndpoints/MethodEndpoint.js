@@ -16,7 +16,7 @@ describe('V1 Example Method Endpoint',()=>{
         response = new ResponseMock;
         request = new RequestMock;
         TestEndpoint.catchDelete(request,response);
-        expect(response.getStatus()).toBe(500);
+        expect(response.getStatus()).toBe(200);
         expect(response.getResponseBody()).toEqual({
             DELETE:1
         });

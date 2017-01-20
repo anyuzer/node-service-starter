@@ -22,7 +22,7 @@ class ProxyEndpoint{
         _requestedResponse.status(statusCode).send(body);
     }
 
-    //This is a generic catch all errors and resolve a 500 to the browser. But it's rea
+    //This is a generic catch all errors and resolve a 500 to the browser.
     _catchErrors(_promise,_next){
         _promise.catch((_E)=>{
             _next(_E);

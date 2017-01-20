@@ -8,14 +8,12 @@ class ProxyEndpoint{
         this.HTTPClient.setHostname('www.example.com');
     }
 
-    //When we do a remote request using the HTTPClient adapter, it handles the underlying requirements to take the streamed data and compile it, and then resolve
     fetchExample(_request,_response,_next){
-        //HTTPClient is a simple adapter for small remote requests that handles the stream management from a remote connection, and simple resolves the request all at once when everything required has been delivered
         var promise = this.HTTPClient.getRemote(_next).then((_remoteResponse)=>{
             this._resolveResponse(_remoteResponse,_response);
         });
 
-        //But in event that our remote request fails, we need to catch the async error, and propogate it to next which advances the middleware manually (to our error handling middleware)
+        //In event that our remote request fails, we need to catch the async error, and propogate it to next which advances the middleware manually (to our error handling middleware)
         this._catchErrors(promise,_next);
     }
 

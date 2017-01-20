@@ -35,6 +35,7 @@ class HTTPClient{
         this.mockPOST = this._genericResponseFactory();
         this.mockPUT = this._genericResponseFactory();
         this.mockPATCH = this._genericResponseFactory();
+        this.error = undefined;
     }
 
     //Setters
@@ -84,6 +85,10 @@ class HTTPClient{
 
     setReturnStream(){
         //TODO: this. We can support streams easily, but there is no pressing need or current active use case.
+    }
+
+    setError(_E){
+        this.error = _E;
     }
 
     //Consumers
@@ -147,9 +152,18 @@ class HTTPClient{
         this.mockDELETE.headers = _responseHeaders || this.mockDELETE.headers;
         this.mockDELETE.body = _responseBody || this.mockDELETE.body;
     }
-    
+
+    _checkError(){
+        if(this.error){
+            throw this.error;
+        }
+    }
+
     _mockRemote(_response){
         return new Promise((_resolve,_reject)=>{
+            if(this.error){
+                return _reject(this.error);
+            }
             var response = [_response.status,_response.headers,_response.body];
             if(_response.status < 200 || _response.status >= 300){
                 return _reject(response);

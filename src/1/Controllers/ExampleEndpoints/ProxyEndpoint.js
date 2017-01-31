@@ -14,7 +14,7 @@ class ProxyEndpoint{
         });
 
         //In event that our remote request fails, we need to catch the async error, and propogate it to next which advances the middleware manually (to our error handling middleware)
-        this._catchErrors(promise,_next);
+        return this._catchErrors(promise,_next);
     }
 
     _resolveResponse(_remoteResponse,_requestedResponse){
@@ -24,7 +24,7 @@ class ProxyEndpoint{
 
     //This is a generic catch all errors and resolve a 500 to the browser.
     _catchErrors(_promise,_next){
-        _promise.catch((_E)=>{
+        return _promise.catch((_E)=>{
             _next(_E);
         });
     }

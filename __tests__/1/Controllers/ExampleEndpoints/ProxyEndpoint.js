@@ -17,13 +17,10 @@ describe('V1 Example Proxy Endpoint',()=>{
     it('should proxy the status and fetched body to response',()=>{
         response = new ResponseMock;
         request = new RequestMock;
-        TestEndpoint.fetchExample(request,response);
-
-        //All endpoints are fundamentally asynchronous, as response is normally an object waiting to have data written to the requesting socket. In this case we can force Jest to wait for the next tick before evaluating the response
-        setTimeout(()=>{
+        return TestEndpoint.fetchExample(request,response).then(()=>{
             expect(response.getStatus()).toBe(200);
             expect(response.getResponseBody()).toEqual('An expected response');
-        },0);
+        });
     });
     
     it('should propogate an error to our next handler',()=>{
@@ -34,12 +31,9 @@ describe('V1 Example Proxy Endpoint',()=>{
         request = new RequestMock;
         next = new NextMock;
 
-        TestEndpoint.fetchExample(request,response,next.spy());
-
-        //All endpoints are fundamentally asynchronous, as response is normally an object waiting to have data written to the requesting socket. In this case we can force Jest to wait for the next tick before evaluating the response
-        setTimeout(()=>{
+        return TestEndpoint.fetchExample(request,response,next.spy()).then(()=>{
             expect(next.data).toBe(E);
-        },0);
+        });
     });
     
 });

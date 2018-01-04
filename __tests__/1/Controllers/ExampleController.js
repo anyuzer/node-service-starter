@@ -1,7 +1,7 @@
 const ExampleController = require('../../../src/1/Controllers/ExampleController');
 const ExampleModel = require('../../../src/1/Models/ExampleModel');
 const ExpressRouter = require('express').Router;
-const ArcObject = require('arc-lib').object;
+const { ArcObject } = require('arc-lib');
 const MockClient = require('../../../__mocks__/HTTPClient');
 
 describe('V1 Example Controller Class',()=>{
@@ -13,6 +13,6 @@ describe('V1 Example Controller Class',()=>{
 
     it('should return an object that has the same API as express.Router',()=>{
         var ExampleRouter = new ExpressRouter;
-        expect(ArcObject.duckInstanceOf(ExpressRouter,TestController.getRouter())).toBe(true);
+        expect(ArcObject.duckType(ExpressRouter,TestController.getRouter())).toBe(true);
     });
 });

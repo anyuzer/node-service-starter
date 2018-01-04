@@ -1,6 +1,6 @@
 const HTTP = require('http');
 const queryString = require('querystring');
-const ArcObject = require('arc-lib').object;
+const { ArcObject } = require('arc-lib');
 
 /*
 NOTE: We do not test spaces that we do not own. Adapters are excluded from testing.

@@ -1,6 +1,6 @@
 const HTTP = require('http');
 const queryString = require('querystring');
-const ArcObject = require('arc-lib').object;
+const { ArcObject } = require('arc-lib');
 
 /*
  NOTE: We do not write tests against our mocks.

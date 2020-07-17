@@ -12,21 +12,20 @@
   "author": "Ian Reid",
   "license": "ISC",
   "dependencies": {
-    "@koa/cors": "^3.0.0",
-    "arc-lib": "^4.2.0",
+    "@koa/cors": "^3.1.0",
+    "arc-lib": "^4.5.0",
     "body-parser": "^1.19.0",
-    "cross-fetch": "^3.0.4",
-    "koa": "^2.10.0",
-    "koa-bodyparser": "^4.2.1",
-    "koa-compress": "^3.0.0",
-    "redis": "^2.8.0",
-    "serialize-javascript": "^2.1.0",
-    "uuid": "^3.3.3"
+    "cross-fetch": "^3.0.5",
+    "koa": "^2.13.0",
+    "koa-bodyparser": "^4.3.0",
+    "redis": "^3.0.2",
+    "serialize-javascript": "^4.0.0",
+    "uuid": "^8.2.0"
   },
   "devDependencies": {
-    "eslint": "^6.5.1",
-    "eslint-plugin-import": "^2.18.2",
-    "jest": "^24.9.0"
+    "eslint": "^7.4.0",
+    "eslint-plugin-import": "^2.22.0",
+    "jest": "^26.1.0"
   },
   "jest": {
     "coverageThreshold": {

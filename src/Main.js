@@ -2,7 +2,6 @@
 /* Disable ESLint no-console as this file only runs on server side */
 const Koa = require('koa');
 const bodyparser = require('koa-bodyparser');
-const compress = require('koa-compress');
 const cors = require('@koa/cors');
 const KoaRouter = require('./Middleware/KoaRouter');
 const SessionHandler = require('./Middleware/SessionHandler');
@@ -27,7 +26,6 @@ class Main {
 
     constructor() {
         this.app = new Koa();
-        this.app.use(compress());
         this.app.use(bodyparser());
         this.app.use(cors({ origin: "*" }));
         this.Router = new KoaRouter;

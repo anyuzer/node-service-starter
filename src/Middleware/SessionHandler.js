@@ -1,4 +1,4 @@
-const uuid = require('uuid/v4');
+const { v4 } = require('uuid');
 
 class SessionHandler {
     constructor() {
@@ -17,7 +17,7 @@ class SessionHandler {
                 return _next();
             }
         }
-        const id = uuid();
+        const id = v4();
         _ctx.cookies.set('id', id);
         _ctx.request.session = { id };
         return _next();

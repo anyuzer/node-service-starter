@@ -1,16 +1,18 @@
-/* eslint no-console: 0 */
-/* Disable ESLint no-console as this file only runs on server side */
+const http = require('http');
+
+//External dependencies
 const Koa = require('koa');
 const bodyparser = require('koa-bodyparser');
 const cors = require('@koa/cors');
-const KoaRouter = require('./Middleware/KoaRouter');
-const SessionHandler = require('./Middleware/SessionHandler');
-const fetch = require('cross-fetch');
-const http = require('http');
 
-const Controllers = require('./1/Controllers/Controllers');
-const Config = require('./Config/Config');
+//Internal
+const KoaRouter = require('./Middleware/KoaRouter.js');
+const SessionHandler = require("./Middleware/SessionHandler.js");
 
+const Controllers = require("./Controllers/Controllers.js");
+const Config = require("./Config/Config.js");
+
+//We don't test our Main, as it's intended only as an entrance to our application
 class Main {
     static Run() {
         // Our application
@@ -18,6 +20,7 @@ class Main {
         App.initRemote()
             .then(App.bindSecurityMiddleware.bind(App))
             .then(App.bindAuthMiddleware.bind(App))
+            .then(App.bindStaticMiddleware.bind(App))
             .then(App.bindAppParsingMiddleware.bind(App))
             .then(App.bindApplicationMiddleware.bind(App))
             .then(App.bindErrorMiddleware.bind(App))
@@ -52,11 +55,15 @@ class Main {
         return Promise.resolve(true);
     }
 
+    bindStaticMiddleware() {
+        console.log('Static middleware bound...');
+        // this.StaticServer.addRoute('/images/**path[/]', { pathToStatic: ['images', 'path'], maxAge: (86400 * 365) });
+        // this.app.use(this.StaticServer.intercept);
+        return Promise.resolve(true);
+    }
+
     bindAppParsingMiddleware() {
         // In the case of request transformation prior to the application
-        // this.express.use(BodyParser.json());
-        // this.express.use(BodyParser.urlencoded({ extended: true }));
-
         console.log('Parsing middleware bound...');
         return Promise.resolve(true);
     }

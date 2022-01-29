@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const { is, ArcHash } = require('arc-lib');
 
+//We don't test our Adapters. They are domain wrappers around non owned integrations. Integration tests should be used instead.
 class SymmetricKeyCrypto {
     static get CIPHER() { return 'AES-256-CBC'; }
 
@@ -44,4 +45,4 @@ class SymmetricKeyCrypto {
     }
 }
 
-module.exports = SymmetricKeyCrypto;
+export default SymmetricKeyCrypto;

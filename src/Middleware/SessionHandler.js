@@ -6,8 +6,8 @@ class SessionHandler {
     }
 
     async intercept(_ctx, _next) {
-        if (_ctx.request.headers['session']) {
-            _ctx.request.session = { id: _ctx.request.headers['session'] };
+        if (_ctx.request.headers['x-session']) {
+            _ctx.request.session = { id: _ctx.request.headers['x-session'] };
             return _next();
         }
         if (_ctx.request.headers.cookie) {

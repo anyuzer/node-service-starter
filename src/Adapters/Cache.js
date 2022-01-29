@@ -1,8 +1,9 @@
 const Redis = require('redis');
-const Config = require('../Config/Config');
 const { ArcHash } = require('arc-lib');
-const SymmetricKeyCrypto = require('./SymmetricKeyCrypto');
+const Config = require('../Config/Config.js');
+const SymmetricKeyCrypto = require('./SymmetricKeyCrypto.js');
 
+//We don't test our Adapters. They are domain wrappers around non owned integrations. Integration tests should be used instead.
 class Cache {
     static get EXPIRY_SECONDS() {
         return Config.getRedisConfig().expirySeconds;
@@ -89,4 +90,4 @@ class Cache {
     }
 }
 
-module.exports = new Cache();
+export default new Cache();

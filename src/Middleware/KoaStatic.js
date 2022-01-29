@@ -1,6 +1,6 @@
 const fs = require('fs');
-const { ArcRouter, ArcHash } = require('arc-lib');
 const path = require('path');
+const { ArcRouter, ArcHash } = require('arc-lib');
 
 class KoaStatic {
     constructor() {
@@ -38,14 +38,19 @@ class KoaStatic {
                     }
                     fs.stat(fullPath, (_suberr, _stats) => {
                         const etag = ArcHash.md5(`${_stats.size}${_stats.mtimeMs}`);
-                        if (_ctx.request.headers['if-none-match'] === etag) {
-                            _ctx.response.status = 304;
-                            return _resolve();
+                        if (_ctx.request.headers['if-none-match']) {
+                            const match = _ctx.request.headers['if-none-match'].match(/"([^"]*)"/);
+                            if(match[1] === etag) {
+                                _ctx.response.status = 304;
+                                return _resolve();
+                            }
                         }
                         if (routeData.match.maxAge) {
-                            _ctx.response.set('cache-control', `max-age=${routeData.match.maxAge}`);
+                            _ctx.response.set('Cache-Control', `max-age=${routeData.match.maxAge}`);
+                        } else {
+                            _ctx.response.set('Cache-Control', `no-cache`);
                         }
-                        _ctx.response.set('ETag', etag);
+                        _ctx.response.etag = etag;
                         _ctx.response.type = path.extname(fullPath);
                         _ctx.response.body = fs.createReadStream(fullPath);
                         return _resolve();

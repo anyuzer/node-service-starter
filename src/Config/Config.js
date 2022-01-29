@@ -1,7 +1,8 @@
-const developmentConfig = require('./development');
-const stagingConfig = require('./staging');
-const productionConfig = require('./production');
+const developmentConfig = require('./development.js');
+const stagingConfig = require('./staging.js');
+const productionConfig = require('./production.js');
 
+//We also don't test our configs
 class Config {
   constructor(_environment) {
     this.setEnvironment(_environment);

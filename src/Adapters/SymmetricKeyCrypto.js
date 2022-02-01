@@ -45,4 +45,4 @@ class SymmetricKeyCrypto {
     }
 }
 
-export default SymmetricKeyCrypto;
+module.exports = SymmetricKeyCrypto;

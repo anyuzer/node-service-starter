@@ -30,6 +30,10 @@ class Config {
     return this.configObj.http;
   }
 
+  getRedisConfig() {
+    return this.configObj.redis;
+  }
+
   reloadConfig(_environment) {
     this.environment = _environment.toLowerCase();
     this._setConfigObj(this._loadConfig(this.environment));

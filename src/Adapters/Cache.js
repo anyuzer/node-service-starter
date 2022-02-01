@@ -1,93 +1,150 @@
-const Redis = require('redis');
-const { ArcHash } = require('arc-lib');
+const { createClient } = require('redis');
+const { is, ArcHash, ArcObject } = require('arc-lib');
 const Config = require('../Config/Config.js');
-const SymmetricKeyCrypto = require('./SymmetricKeyCrypto.js');
 
 //Our adapters are non owned, we use Integration tests to cover these.
 class Cache {
-    static get EXPIRY_SECONDS() {
-        return Config.getRedisConfig().expirySeconds;
-    }
-
-    static get PREFIX() {
-        return `SERVICE_NAME`;
-    }
-
     constructor() {
-        const redisConfig = Config.getRedisConfig(); // We can add our retry function here if/when needed
-        redisConfig.prefix = Cache.PREFIX;
-        this.Client = this._createRedisClient(redisConfig);
-        this.Client.on('error', this._handleRedisErrors.bind(this));
-        this.Client.on('connect', () => {
-            console.log('Redis Connection Successful...');
-        });
+        this.config = Config.getRedisConfig();
+        this.connected = false;
+        this.prefix = '';
+        this.expirySeconds = this.config.expirySeconds;
+
+        this.client = this._clientFactory();
     }
 
-    getObjectFromCache(_key, _updateExpiry) {
-        return new Promise((_resolve, _reject) => {
-            this._getFromRedis(_resolve, _reject, _key, true, _updateExpiry);
-        });
+    getPrefix() {
+        return this.prefix;
     }
 
-    setObjectToCache(_key, _obj) {
-        return Promise.resolve(this._setToRedis(_key, _obj));
+    async setPrefix(_prefix) {
+        let reconnect = false;
+
+        //If we're previously connected, lets disconnect
+        if(this.connected) {
+            await this.quit();
+            reconnect = true;
+        }
+
+        //Update our prefix, reconfigure our client
+        this.prefix = _prefix;
+        this.client = this._clientFactory();
+
+        //And reconnect if we were previously connected
+        if(reconnect) {
+            await this.connect();
+        }
     }
 
-    getScalarFromCache(_key, _updateExpiry) {
-        return new Promise((_resolve, _reject) => {
-            this._getFromRedis(_resolve, _reject, _key, false, _updateExpiry);
-        });
+    getExpirySeconds() {
+        return this.expirySeconds;
     }
 
-    setScalarToCache(_key, _val) {
-        return Promise.resolve(this._setToRedis(_key, _val));
+    setExpirySeconds(_seconds) {
+        this.expirySeconds = _seconds;
     }
 
-    deleteFromCache(_key) {
-        return Promise.resolve(this.Client.del(_key));
+    async connect() {
+        if(!this.connected) {
+            await this.client.connect();
+            return true;
+        }
+        return false;
     }
 
-    updateExpire(_key) {
-        this.Client.expire(_key, Cache.EXPIRY_SECONDS);
+    async disconnect() {
+        this._checkConnection();
+        await this.client.disconnect();
     }
 
-    getTTL(_key) {
-        return new Promise((_resolve, _reject) => {
-            this.Client.ttl(_key, (_err, _reply) => {
-                if (_err) {
-                    _reject(_err);
-                }
-                _resolve(_reply);
-            });
-        });
+    async quit() {
+        this._checkConnection();
+        await this.client.quit();
+    }
+
+    isConnected() {
+        return this.connected;
+    }
+
+    //Redis does offer a RedisJSON module now which can make these redundant
+    async getJSONFromCache(_key, _updateExpiry) {
+        this._checkConnection();
+        return this._getFromRedis(_key, true, _updateExpiry);
+    }
+
+    async setJSONToCache(_key, _json, _customExpiryInSeconds) {
+        this._checkConnection();
+        return this._setToRedis(_key, JSON.stringify(_json), _customExpiryInSeconds);
+    }
+
+    async getScalarFromCache(_key, _updateExpiry) {
+        this._checkConnection();
+        return this._getFromRedis(_key, false, _updateExpiry);
+    }
+
+    async setScalarToCache(_key, _val, _customExpiryInSeconds) {
+        this._checkConnection();
+        return this._setToRedis(_key, _val, _customExpiryInSeconds);
+    }
+
+    async deleteFromCache(_key) {
+        this._checkConnection();
+        return this.client.del(_key);
+    }
+
+    async updateExpire(_key, _customTTL) {
+        this._checkConnection();
+        return this.client.expire(_key, is(_customTTL) === 'number' ? _customTTL : this.getExpirySeconds());
+    }
+
+    async getTTL(_key) {
+        this._checkConnection();
+        return this.client.ttl(_key);
     }
 
     // Private
-    _createRedisClient(_redisConfig) {
-        return Redis.createClient(_redisConfig);
+    async _getFromRedis(_key, _jsonParse, _updateExpiry) {
+        let cacheVal =  await this.client.get(_key);
+        if(_jsonParse && cacheVal) {
+            try {
+                cacheVal = JSON.parse(cacheVal)
+            } catch (e) {
+                //This is probably bad behavior, but I don't think I generally care if I get garbage back from the cache
+                return false;
+            }
+        }
+
+        if(cacheVal && _updateExpiry) {
+            //We don't wait for this because if we're using our Cache right, this succeeding is optional
+            this.updateExpire(_key, _updateExpiry);
+        }
+
+        return cacheVal;
     }
 
-    _getFromRedis(_resolve, _reject, _key, _jsonParse, _updateExpiry) {
-        this.Client.get(ArcHash.md5(_key), (_err, _reply) => {
-            if (_err) {
-                _reject(_err);
-            }
+    _setToRedis(_key, _val, _expiryInSeconds) {
+        return this.client.set(_key, _val, { EX: _expiryInSeconds || this.getExpirySeconds() });
+    }
 
-            if (_reply && _updateExpiry !== false) {
-                this.updateExpire(ArcHash.md5(_key));
-            }
+    _checkConnection(){
+        if(!this.connected) {
+            throw new Error('Not connected to Redis Client.');
+        }
+    }
 
-            _resolve(SymmetricKeyCrypto.decrypt(_key, _reply));
+    _clientFactory() {
+        const client = createClient({...this.config, prefix: this.getPrefix()});
+        client.on('ready', () => {
+            console.log('Redis successfully connected.');
+            this.connected = true;
         });
-    }
 
-    _setToRedis(_key, _val) {
-        return this.Client.setex(ArcHash.md5(_key), Cache.EXPIRY_SECONDS, SymmetricKeyCrypto.encrypt(_key, _val));
-    }
-
-    _handleRedisErrors(_err) {
-        console.log(_err.message);
+        client.on('end', () => {
+            console.log('Redis successfully disconnected.');
+            this.connected = false;
+        })
+        return client;
     }
 }
 
-export default new Cache();
+module.exports = new Cache();

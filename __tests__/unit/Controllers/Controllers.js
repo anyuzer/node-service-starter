@@ -1,11 +1,11 @@
 const { ArcHash } = require('arc-lib');
 
-const Controllers = require('../../src/Controllers/Controllers');
-const KoaRouter = require('../../src/Middleware/KoaRouter');
-const ExampleModel = require('../../src/Models/ExampleModel');
+const Controllers = require('../../../src/Controllers/Controllers');
+const KoaRouter = require('../../../src/Middleware/KoaRouter');
+const ExampleModel = require('../../../src/Models/ExampleModel');
 
-const CtxMock = require('../../__mocks__/CtxMock');
-const Next = require('../../__mocks__/NextMock');
+const CtxMock = require('../../../__mocks__/CtxMock');
+const Next = require('../../../__mocks__/NextMock');
 
 describe('Controllers Class',()=>{
     //Controllers are simple, not a ton to test here

@@ -1,5 +1,5 @@
 const { ArcHash } = require('arc-lib');
-const ExampleModel = require('../../src/Models/ExampleModel.js');
+const ExampleModel = require('../../../src/Models/ExampleModel.js');
 
 describe('Example Model',() => {
     it('should be an instance of ExampleModel',async ()=>{

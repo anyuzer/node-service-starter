@@ -3,18 +3,18 @@ const { ArcHash } = require('arc-lib');
 const Config = require('../Config/Config.js');
 const SymmetricKeyCrypto = require('./SymmetricKeyCrypto.js');
 
-//We don't test our Adapters. They are domain wrappers around non owned integrations. Integration tests should be used instead.
+//Our adapters are non owned, we use Integration tests to cover these.
 class Cache {
     static get EXPIRY_SECONDS() {
         return Config.getRedisConfig().expirySeconds;
     }
 
     static get PREFIX() {
-        return `${MODULE_NAME}:`;
+        return `SERVICE_NAME`;
     }
 
     constructor() {
-        const redisConfig = Config.getRedisConfig(); // We cann add our retry function here if/when needed
+        const redisConfig = Config.getRedisConfig(); // We can add our retry function here if/when needed
         redisConfig.prefix = Cache.PREFIX;
         this.Client = this._createRedisClient(redisConfig);
         this.Client.on('error', this._handleRedisErrors.bind(this));

@@ -30,6 +30,11 @@ class Config {
     return this.configObj.http;
   }
 
+  reloadConfig(_environment) {
+    this.environment = _environment.toLowerCase();
+    this._setConfigObj(this._loadConfig(this.environment));
+  }
+
     // Private
   _setConfigObj(_configObj) {
     this.configObj = _configObj;

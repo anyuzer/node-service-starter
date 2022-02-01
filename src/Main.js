@@ -41,7 +41,6 @@ class Main {
         return Promise.resolve(true);
     }
 
-
     bindSecurityMiddleware() {
         // If I need to handle any top level security concerns. For example, not having http enabled, but catching non TLS requests and redirecting to the correct SecureServer
         console.log('Security middleware bound...');

@@ -91,4 +91,4 @@ class Main {
     }
 }
 
-module.exports = Main;
+Main.Run();

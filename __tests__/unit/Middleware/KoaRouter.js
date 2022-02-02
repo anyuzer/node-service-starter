@@ -1,6 +1,6 @@
 const KoaRouter = require('../../../src/Middleware/KoaRouter');
-const CtxMock = require('../../../__mocks__/CtxMock');
-const NextMock = require('../../../__mocks__/NextMock');
+const CtxMock = require('../../__mocks__/CtxMock');
+const NextMock = require('../../__mocks__/NextMock');
 
 describe('KoaRouter Class', ()=>{
     it('should be instanceOf KoaRouter',()=>{

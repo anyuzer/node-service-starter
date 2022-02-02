@@ -1,6 +1,6 @@
-const { is, ArcDate } = require('arc-lib');
+const { is } = require('arc-lib');
 const AWS = require("aws-sdk");
-const Utils = require('../Utilities/Utils');
+
 AWS.config.update({
     region: "us-west-2"
 });
@@ -60,7 +60,7 @@ class DynamoDB {
     }
 
     //And of course delete
-    async deleteContentUpdate(_recordId) {
+    async deleteExample(_recordId) {
         const params = {
             TableName: this.testTable,
             Key: { "recordId": _recordId }

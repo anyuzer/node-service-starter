@@ -1,5 +1,5 @@
 const { createClient } = require('redis');
-const { is, ArcHash, ArcObject } = require('arc-lib');
+const { is } = require('arc-lib');
 const Config = require('../Config/Config.js');
 
 //Our adapters are non owned, we use Integration tests to cover these.

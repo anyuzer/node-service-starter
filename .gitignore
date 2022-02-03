@@ -3,8 +3,10 @@
 node_modules
 .nyc_output
 coverage
+report
 *.log
 dist
 *.bundle.js
 coverage
 certs/
+reports

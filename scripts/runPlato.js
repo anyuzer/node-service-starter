@@ -1,7 +1,7 @@
 const path = require('path');
 const plato = require('es6-plato');
 
-const localPackage = require('./package.json');
+const localPackage = require('../package.json');
 
 const srcPath = `${path.resolve('./src/**/*.js')}`;
 const outputDir = `${path.resolve(localPackage.plato?.reportDirectory || './')}`;

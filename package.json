@@ -4,11 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production node ./src/Main.js",
-    "start-dev": "NODE_ENV=development node ./src/Main.js",
-    "start-stg": "NODE_ENV=staging node ./src/Main.js",
-    "test-dev": "NODE_ENV=development jest --coverage",
-    "analyze": "node ./runPlato.js"
+    "start": "node ./src/Main.js",
+    "unit-tests": "jest ./__tests__/unit --coverage --detectOpenHandles",
+    "integration-tests": "jest ./__tests__/integration",
+    "analyze": "node ./scripts/runPlato.js"
   },
   "author": "Ian Reid",
   "license": "ISC",

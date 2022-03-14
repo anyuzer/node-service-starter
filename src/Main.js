@@ -92,12 +92,4 @@ class Main {
     }
 }
 
-(async () => {
-    try{
-        Main.Run();
-    } catch (e){
-        console.log(e);
-        console.log('Failed to start application. Exiting.');
-        process.exit();
-    }
-})();
+Main.Run();
